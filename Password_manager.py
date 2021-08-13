@@ -15,7 +15,7 @@ def random_password(min_characters, max_characters, allowed_characters):
 
 data = title + " " + random_password()
 
-file = open("passwords.txt", "w")
+file = open("passwords.txt", "a")
 file.write(data)
 file.close()
 
