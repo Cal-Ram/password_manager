@@ -71,6 +71,7 @@ def decrypt(password):
 window = Tk()
 window.title("Password Manager")
 window.geometry("500x600")
+window.resizable(False, False)
 
 # 3 input fields
 Label_web = Label(window, text="Website:")
