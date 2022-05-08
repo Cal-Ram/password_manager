@@ -8,8 +8,6 @@ allowed_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!
 website = ""
 username = ""
 password = ""
-
-
 def isvalid(password):
     for char in password:
         if char not in allowed_chars:
@@ -20,47 +18,43 @@ def isvalid(password):
             can_continue = True
             return can_continue
 # Encrypting the password
-
-
 def encrypt(password):
     encrypted = ""
     for char in password:
         new = chr(ord(char) + 3)
         encrypted += new
     return encrypted
+
 # storing the password
-
-
 def storing_data(website, username, password):
-    file = open("passwordmanager.csv", "a")
+    file = open("passwordmanager.csv", "a", newline="")
     writer = csv.writer(file)
     writer.writerow([website, username, password])
     file.close()
-
 
 def enter_password():
     website = website_input.get()
     username = username_input.get()
     password = password_input.get()
-
     can_continue = True
     new_pass = encrypt(password)
     print(new_pass)
     storing_data(website, username, new_pass)
     print("done")
+    contents_table.insert ("", "end", values=(website, username, new_pass))
 
-# reading the password
 
-
+# reading the password 
 def read_data():
     file = open("passwordmanager.csv", "r")
-    csv_reader = csv.reader(file, delimiter=",") # perhaps needs to be DictReader
-    for row in csv:
-        details = {"Website": row[1], "Username": row[2], "Password": row[3]}
-    return details
+    csv_reader = csv.reader(file) # perhaps needs to be DictReader
+    for row in csv_reader:
+        print (row)
+        contents_table.insert ("", "end", values=(row[0], row[1], row[2]))
+
+
+
 # decrypting the password
-
-
 def decrypt(password):
     decrypted = ""
     for char in password:
@@ -71,9 +65,9 @@ def decrypt(password):
 def get_password():
     passwords = read_data()
     decrypt(passwords)
+
+
 # user interface for the application
-
-
 window = Tk()
 window.title("Password Manager")
 window.geometry("500x600")
@@ -98,7 +92,6 @@ Label_pass = Label(window, text="Password:")
 Label_pass.grid(row=1, column=8, columnspan=2)
 password_input = Entry(window, textvariable=password)
 password_input.grid(row=3, column=8, columnspan=2)
-
 # button to add password
 add_password = Button(window, text="Add Password", command=enter_password)
 add_password.grid(row=5, column=2, columnspan=4)
@@ -117,6 +110,10 @@ contents_table.heading("#0", text="", anchor=CENTER)
 contents_table.heading("Website", text="Website", anchor=CENTER)
 contents_table.heading("Username", text="Username", anchor=CENTER)
 contents_table.heading("Password", text="Password", anchor=CENTER)
+
+
+# need to insert the data from the csv into the table
+read_data()
 
 contents_table.grid(row=12, column=5)
 
